@@ -16,7 +16,7 @@ const ListTodo = ({ task, setTask, hanbleEdit }) => {
               <tr>
                 <th>Task Name</th>
                 <th>Description</th>
-                <th> Done</th>
+                <th>Done</th>
               </tr>
             </thead>
             <tbody>
