@@ -1,16 +1,11 @@
 import React from "react";
 import { Table, Button } from "react-bootstrap";
-const ListTodo = ({ task, setTask, hanbleEdit }) => {
-  const tasklength = task.length;
-  const hanbleDone = (id) => {
-    setTask(task.filter((e) => e.id !== id));
-  };
-
+const ListTodo = ({ tasks, handleEdit, removeTask }) => {
   return (
     <>
-      {task.length > 0 ? (
+      {tasks.length > 0 ? (
         <div>
-          <h4> Pending Tasks: {tasklength} </h4>
+          <h4> Pending Tasks: {tasks.length} </h4>
           <Table striped bordered hover className="text-center">
             <thead>
               <tr>
@@ -20,7 +15,7 @@ const ListTodo = ({ task, setTask, hanbleEdit }) => {
               </tr>
             </thead>
             <tbody>
-              {task.map(({ id, name, description }) => (
+              {tasks.map(({ id, name, description }) => (
                 <tr key={id}>
                   <td>{name}</td>
                   <td>{description}</td>
@@ -28,14 +23,14 @@ const ListTodo = ({ task, setTask, hanbleEdit }) => {
                     <Button
                       variant="secondary"
                       size="sm"
-                      onClick={() => hanbleDone(id)}
+                      onClick={() => removeTask(id)}
                     >
                       Done
                     </Button>{" "}
                     <Button
                       variant="primary"
                       size="sm"
-                      onClick={() => hanbleEdit(id)}
+                      onClick={() => handleEdit(id)}
                     >
                       Edit
                     </Button>

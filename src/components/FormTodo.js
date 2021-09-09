@@ -1,40 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Button } from "react-bootstrap";
 
-const FormTodo = ({ task, setTask }) => {
+const FormTodo = ({ currentTask, tasks, setTasks }) => {
+  let getName = currentTask["name"] ? currentTask["name"] : "";
+  let getDescription = currentTask["description"]
+    ? currentTask["description"]
+    : "";
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [validated, setValidated] = useState(false);
-  const handleChange = (e) => {
-    if (e.target.name === "name") {
-      setName(e.target.value);
-    } else {
-      setDescription(e.target.value);
-    }
-  };
+  useEffect(() => {
+    setName(getName);
+    setDescription(getDescription);
+  }, [getName, getDescription]);
 
   const onSubmit = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     const form = e.currentTarget;
-    if (form.checkValidity() === false) {
-      e.preventDefault();
-      e.stopPropagation();
-      setValidated(true);
-    } else {
-      e.preventDefault();
-      setTask(() => [
-        ...task,
-        {
-          name: name,
-          description: description,
-          id: new Date().getMilliseconds(),
-          done: false,
-        },
-      ]);
-      localStorage.setItem("task", JSON.stringify(task));
-      setName("");
-      setDescription("");
-      setValidated(false);
+
+    if (!form.checkValidity()) {
+      return setValidated(true);
     }
+    if (currentTask.id) {
+      // return update()
+    }
+    //save
+    /*setTasks([
+      ...tasks,
+      {
+        name,
+        description,
+        id: new Date().getMilliseconds(),
+        done: false,
+      },
+    ]);
+    setName("");
+    setDescription("");
+    setValidated(false);*/
   };
   return (
     <>
@@ -54,7 +57,7 @@ const FormTodo = ({ task, setTask }) => {
               type="text"
               name="name"
               value={name}
-              onChange={(e) => handleChange(e)}
+              onChange={(e) => setName(e.target.value)}
               autoComplete="off"
               autoFocus
             />
@@ -71,7 +74,7 @@ const FormTodo = ({ task, setTask }) => {
               name="description"
               autoComplete="off"
               value={description}
-              onChange={(e) => handleChange(e)}
+              onChange={(e) => setDescription(e.target.value)}
             />{" "}
             <Form.Control.Feedback type="invalid">
               Description is required
