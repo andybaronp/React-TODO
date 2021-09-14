@@ -14,7 +14,31 @@ const FormTodo = ({ currentTask, tasks, setTasks, editing, setEditing }) => {
     setName(getName);
     setDescription(getDescription);
   }, [getName, getDescription]);
-
+  const cleanState = () => {
+    setName("");
+    setDescription("");
+    setValidated(false);
+    setEditing(false);
+  };
+  const savingTask = () => {
+    setTasks([
+      ...tasks,
+      {
+        name,
+        description,
+        id: Math.random().toString(36).substr(2.5),
+        done: false,
+      },
+    ]);
+    return cleanState();
+  };
+  const editingTask = () => {
+    let updatedTasks = tasks.map((task) =>
+      task.id === currentTask.id ? { ...task, name, description } : task
+    );
+    setTasks(updatedTasks);
+    return cleanState();
+  };
   const onSubmit = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -23,41 +47,10 @@ const FormTodo = ({ currentTask, tasks, setTasks, editing, setEditing }) => {
     if (!form.checkValidity()) {
       return setValidated(true);
     }
-
-    if (!editing) {
-      //saved
-      setTasks([
-        ...tasks,
-        {
-          name,
-          description,
-          id: Math.random().toString(36).substr(2.5),
-          done: false,
-        },
-      ]);
-      setName("");
-      setDescription("");
-      setValidated(false);
-    }
-
     if (editing) {
-      setTasks(
-        tasks.map((task) => {
-          if (currentTask.id === task.id) {
-            return {
-              ...task,
-              name,
-              description,
-            };
-          }
-          return task;
-        })
-      );
-      setName("");
-      setDescription("");
-      setValidated(false);
-      setEditing(false);
+      return editingTask();
     }
+    return savingTask();
   };
   return (
     <>
