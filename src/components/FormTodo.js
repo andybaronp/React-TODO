@@ -43,7 +43,6 @@ const FormTodo = ({ currentTask, tasks, setTasks, editing, setEditing }) => {
     e.preventDefault();
     e.stopPropagation();
     const form = e.currentTarget;
-
     if (!form.checkValidity()) {
       return setValidated(true);
     }
