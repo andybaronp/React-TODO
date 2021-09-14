@@ -4,9 +4,9 @@ const ListTodo = ({ tasks, handleEdit, removeTask }) => {
   return (
     <>
       {tasks.length > 0 ? (
-        <div>
+        <div className="table table-responsive sm">
           <h4> Pending Tasks: {tasks.length} </h4>
-          <Table striped bordered hover className="text-center">
+          <Table striped bordered hover className="table text-center">
             <thead>
               <tr>
                 <th>Task Name</th>
@@ -14,23 +14,23 @@ const ListTodo = ({ tasks, handleEdit, removeTask }) => {
                 <th>Done</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="  align-middle">
               {tasks.map(({ id, name, description }) => (
                 <tr key={id}>
                   <td>{name}</td>
                   <td>{description}</td>
-                  <td className="d-grid gap-4">
+                  <td className="d-grid gap-0">
                     <Button
                       variant="secondary"
                       size="sm"
                       onClick={() => removeTask(id)}
                     >
-                      Done
-                    </Button>{" "}
+                      Delete
+                    </Button>
                     <Button
                       variant="primary"
                       size="sm"
-                      onClick={() => handleEdit(id)}
+                      onClick={() => handleEdit(id, name, description)}
                     >
                       Edit
                     </Button>
