@@ -24,40 +24,35 @@ const FormTodo = ({ currentTask, tasks, setTasks, editing, setEditing }) => {
       return setValidated(true);
     }
 
-    if (!editing) {
-      //saved
-      setTasks([
-        ...tasks,
-        {
-          name,
-          description,
-          id: Math.random().toString(36).substr(2.5),
-          done: false,
-        },
-      ]);
-      setName("");
-      setDescription("");
-      setValidated(false);
-    }
-
-    if (editing) {
+    function taskHandling() {
       setTasks(
-        tasks.map((task) => {
-          if (currentTask.id === task.id) {
-            return {
-              ...task,
-              name,
-              description,
-            };
-          }
-          return task;
-        })
+        !editing
+          ? [
+              ...tasks,
+              {
+                name,
+                description,
+                id: Math.random().toString(36).substr(2.5),
+                done: false,
+              },
+            ]
+          : tasks.map((task) => {
+              if (currentTask.id === task.id) {
+                return {
+                  ...task,
+                  name,
+                  description,
+                };
+              }
+              return task;
+            })
       );
       setName("");
       setDescription("");
       setValidated(false);
       setEditing(false);
     }
+    taskHandling();
   };
   return (
     <>
