@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Form, Button } from "react-bootstrap";
 
-const FormTodo = ({ currentTask, tasks, setTasks }) => {
+const FormTodo = ({ currentTask, tasks, setTasks, editing, setEditing }) => {
   let getName = currentTask["name"] ? currentTask["name"] : "";
   let getDescription = currentTask["description"]
     ? currentTask["description"]
@@ -9,6 +9,7 @@ const FormTodo = ({ currentTask, tasks, setTasks }) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [validated, setValidated] = useState(false);
+
   useEffect(() => {
     setName(getName);
     setDescription(getDescription);
@@ -22,22 +23,41 @@ const FormTodo = ({ currentTask, tasks, setTasks }) => {
     if (!form.checkValidity()) {
       return setValidated(true);
     }
-    if (currentTask.id) {
-      // return update()
+
+    if (!editing) {
+      //saved
+      setTasks([
+        ...tasks,
+        {
+          name,
+          description,
+          id: Math.random().toString(36).substr(2.5),
+          done: false,
+        },
+      ]);
+      setName("");
+      setDescription("");
+      setValidated(false);
     }
-    //save
-    /*setTasks([
-      ...tasks,
-      {
-        name,
-        description,
-        id: new Date().getMilliseconds(),
-        done: false,
-      },
-    ]);
-    setName("");
-    setDescription("");
-    setValidated(false);*/
+
+    if (editing) {
+      setTasks(
+        tasks.map((task) => {
+          if (currentTask.id === task.id) {
+            return {
+              ...task,
+              name,
+              description,
+            };
+          }
+          return task;
+        })
+      );
+      setName("");
+      setDescription("");
+      setValidated(false);
+      setEditing(false);
+    }
   };
   return (
     <>
@@ -80,10 +100,11 @@ const FormTodo = ({ currentTask, tasks, setTasks }) => {
               Description is required
             </Form.Control.Feedback>
           </Form.Group>
-
-          <Button variant="primary" type="submit">
-            Submit
-          </Button>
+          <div className="d-grid gap-2  mx-auto ">
+            <Button variant="primary" type="submit">
+              Submit
+            </Button>
+          </div>
         </Form>
       </div>
     </>
