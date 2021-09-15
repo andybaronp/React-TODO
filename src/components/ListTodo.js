@@ -41,7 +41,9 @@ const ListTodo = ({ tasks, handleEdit, removeTask }) => {
           </Table>
         </div>
       ) : (
-        ""
+        <div className="text-center info pt-5">
+          <h3> No Tasks </h3>
+        </div>
       )}
     </>
   );
